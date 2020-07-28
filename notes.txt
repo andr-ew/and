@@ -1,0 +1,58 @@
+
+
+a = {
+  in1 = {},
+  out1 = {},
+  out2 = {}
+}
+
+b = {
+  in1 = {},
+  in2 = {},
+  out1 = {}
+}
+
+p a.out2 > b.in1 + b.in2
+p b.out1 + a.out1 > dac.in1
+p b.out2 > a.in1 
+
+/*
+*/
+
+typedef struct {
+  int ndats;
+  DAT* dats; 
+  int krate;
+  int nkins;
+  KIN* kins;
+  int nkouts;
+  KOUT* kouts;
+  int nsamps; 
+  int nains;
+  AIN* ains;
+  int naouts;
+  AOUT* aouts;
+  OP* op;
+  struct Opdata* opdata;
+} NODE;
+
+typedef struct {
+  ERR function* init(NODE* node);
+  ERR function* cleanup(NODE* node);
+  ERR function* process(NODE* node);
+} OP;
+
+typedef struct {
+  FL* samps; 
+  FL* samp; /* input buffer pointers, buffer length must == parent node.nsamps */
+  FL function* get_next(AIN* ain); /* sub can redefine */
+} BAIN
+
+typedef struct {
+  BAIN* b /* base class */
+  /* ... */
+} AIN;
+
+function void node_patch_a(AND* and, NODE* n1, int* iout, NODE* n2, int* iin)
+  n2.ains[iin].b.samps = n1.aouts[iout].b.samps;
+}

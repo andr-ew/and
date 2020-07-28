@@ -1,0 +1,47 @@
+
+
+a = {
+  in1 = {},
+  out1 = {},
+  out2 = {}
+}
+
+b = {
+  in1 = {},
+  in2 = {},
+  out1 = {}
+}
+
+p a.out2 > b.in1 + b.in2
+p b.out1 + a.out1 > dac.in1
+p b.out2 > a.in1 
+
+/*
+*/
+
+typedef struct {
+  int nsamps;
+  int ndats;
+  int* sdats;
+  FL** dats;
+  int spdat;
+  FL* pdat; /* private data */
+  int nkins;
+  FL* kins;
+  int nkouts;
+  FL* kouts;
+  int nains;
+  FL** ains;
+  int naouts;
+  FL** aouts;
+  void function* process(int nsamps, FL** ains, FL** kins, FL** aouts, FL** kouts, FL** dats, FL** pdats);
+} NODE
+
+typedef struct {
+  void function* init(int* ndats, int** sdats, FL** dats, int* spdat, FL* pdat, int* nkins, int* nkouts, int* nains, int* naouts);
+  void function* process(int nsamps, FL** ains, FL** kins, FL** aouts, FL** kouts, FL** dats, FL** pdats);
+} C_OP
+
+function void node_patch_a(AND* and, NODE* n1, int* iout, NODE* n2, int* iin)
+  n2.ains[iin] = n1.aouts[iout];
+}
